@@ -67,9 +67,6 @@ jobs:
       - name: Run server
         run: npm run start & wait-port -t 30000 localhost:3001
 
-      - name: Sprint number
-        run: echo "Sprint number - ${{ needs.get_sprint_number.outputs.sprint }}"
-
       - name: Run test endpoints for 12
         if: ${{ needs.get_sprint_number.outputs.sprint == '12' }}
         working-directory: se-actions-tests-p
