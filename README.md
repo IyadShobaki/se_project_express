@@ -1,9 +1,34 @@
-# WTWR (What to Wear?): Back End
-The back-end project is focused on creating a server for the WTWR application. You’ll gain a deeper understanding of how to work with databases, set up security and testing, and deploy web applications on a remote machine. The eventual goal is to create a server with an API and user authorization.
-## Running the Project
-`npm run start` — to launch the server 
+# WTWR (What to Wear?): Back End Server
 
-`npm run dev` — to launch the server with the hot reload feature
+This repository contains the back end server for WTWR (What To Wear?), a weather-based clothing recommendation application. The server provides a RESTful API and database integration to support secure user authentication, management of clothing items, and associated user data for the WTWR system.
 
-### Testing
-Before committing your code, make sure you edit the file `sprint.txt` in the root folder. The file `sprint.txt` should contain the number of the sprint you're currently working on. For ex. 12
+## Features
+
+- RESTful API structure.
+- User registration and authentication support.
+- Endpoints for managing clothing items and user profiles.
+- Database persistence using MongoDB.
+
+## Technologies Used
+
+The following technologies and techniques are used in this project:
+
+- Node.js – JavaScript runtime for building the server.
+- Express.js – Web framework for defining API routes.
+- MongoDB – NoSQL database for data storage.
+- Mongoose – ODM for modeling MongoDB data.
+- ESLint & Prettier – Code quality and formatting tools.
+- Postman (or similar) – API testing tool.
+
+## API Endpoints (Example)
+
+### Users
+
+- POST /users – Create a new user.
+- GET /users – Get a list of users
+
+### Clothing Items
+
+- GET /items – Get all clothing items.
+- POST /items – Create a new clothing item.
+- DELETE /items/:id – Delete a clothing item.

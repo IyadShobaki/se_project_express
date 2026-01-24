@@ -1,11 +1,19 @@
 const ClothingItem = require("../models/clothingItem");
+const {
+  INTERNAL_SERVER_ERROR_CODE,
+  errorMessages,
+  BAD_REQUEST_ERROR_CODE,
+  NOT_FOUND_ERROR_CODE,
+} = require("../utils/constants");
 
 const getClothingItems = (req, res) => {
   ClothingItem.find({})
     .then((items) => res.status(200).send({ data: items }))
     .catch((err) => {
       console.error(err);
-      return res.status(500).send({ message: err.message });
+      return res
+        .status(INTERNAL_SERVER_ERROR_CODE)
+        .send({ message: errorMessages.INTERNAL_SERVER_ERROR });
     });
 };
 
@@ -17,37 +25,13 @@ const createClothingItem = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
-        return res.status(400).send({ message: err.message });
+        return res
+          .status(BAD_REQUEST_ERROR_CODE)
+          .send({ message: errorMessages.BAD_REQUEST });
       }
-      return res.status(500).send({ message: err.message });
-    });
-};
-
-const updateClothingItem = (req, res) => {
-  const { itemId } = req.params;
-  const { name, weather, imageUrl } = req.body;
-  ClothingItem.findByIdAndUpdate(
-    itemId,
-    { name, weather, imageUrl },
-    {
-      new: true,
-      runValidators: true,
-    }
-  )
-    .orFail()
-    .then((item) => res.status(200).send({ data: item }))
-    .catch((err) => {
-      console.error(err);
-      if (err.name === "ValidationError") {
-        return res.status(400).send({ message: err.message });
-      }
-      if (err.name === "DocumentNotFoundError") {
-        return res.status(404).send({ message: err.message });
-      }
-      if (err.name === "CastError") {
-        return res.status(400).send({ message: err.message });
-      }
-      return res.status(500).send({ message: err.message });
+      return res
+        .status(INTERNAL_SERVER_ERROR_CODE)
+        .send({ message: errorMessages.INTERNAL_SERVER_ERROR });
     });
 };
 
@@ -59,12 +43,18 @@ const deleteClothingItem = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
-        return res.status(404).send({ message: err.message });
+        return res
+          .status(NOT_FOUND_ERROR_CODE)
+          .send({ message: errorMessages.NOT_FOUND });
       }
       if (err.name === "CastError") {
-        return res.status(400).send({ message: err.message });
+        return res
+          .status(BAD_REQUEST_ERROR_CODE)
+          .send({ message: errorMessages.BAD_REQUEST });
       }
-      return res.status(500).send({ message: err.message });
+      return res
+        .status(INTERNAL_SERVER_ERROR_CODE)
+        .send({ message: errorMessages.INTERNAL_SERVER_ERROR });
     });
 };
 
@@ -81,12 +71,18 @@ const likeClothingItem = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
-        return res.status(404).send({ message: err.message });
+        return res
+          .status(NOT_FOUND_ERROR_CODE)
+          .send({ message: errorMessages.NOT_FOUND });
       }
       if (err.name === "CastError") {
-        return res.status(400).send({ message: err.message });
+        return res
+          .status(BAD_REQUEST_ERROR_CODE)
+          .send({ message: errorMessages.BAD_REQUEST });
       }
-      return res.status(500).send({ message: err.message });
+      return res
+        .status(INTERNAL_SERVER_ERROR_CODE)
+        .send({ message: errorMessages.INTERNAL_SERVER_ERROR });
     });
 };
 
@@ -103,18 +99,23 @@ const dislikeClothingItem = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
-        return res.status(404).send({ message: err.message });
+        return res
+          .status(NOT_FOUND_ERROR_CODE)
+          .send({ message: errorMessages.NOT_FOUND });
       }
       if (err.name === "CastError") {
-        return res.status(400).send({ message: err.message });
+        return res
+          .status(BAD_REQUEST_ERROR_CODE)
+          .send({ message: errorMessages.BAD_REQUEST });
       }
-      return res.status(500).send({ message: err.message });
+      return res
+        .status(INTERNAL_SERVER_ERROR_CODE)
+        .send({ message: errorMessages.INTERNAL_SERVER_ERROR });
     });
 };
 module.exports = {
   getClothingItems,
   createClothingItem,
-  updateClothingItem,
   deleteClothingItem,
   likeClothingItem,
   dislikeClothingItem,
