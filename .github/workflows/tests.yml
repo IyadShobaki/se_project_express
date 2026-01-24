@@ -25,6 +25,7 @@ jobs:
         run: |
           echo "Repository name: ${{ github.repository }}"
           echo "Repository owner: ${{ github.repository_owner }}"
+          echo ${{ steps.sprint.outputs.SPRINT_NUMBER }}
 
   test_endpoints:
     if: ${{ github.repository != 'tripleten-com/se_project_express' }}
