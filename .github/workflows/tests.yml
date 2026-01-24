@@ -25,7 +25,6 @@ jobs:
         run: |
           echo "Repository name: ${{ github.repository }}"
           echo "Repository owner: ${{ github.repository_owner }}"
-          echo ${{ steps.sprint.outputs.SPRINT_NUMBER }}
 
   test_endpoints:
     if: ${{ github.repository != 'tripleten-com/se_project_express' }}
@@ -67,6 +66,9 @@ jobs:
 
       - name: Run server
         run: npm run start & wait-port -t 30000 localhost:3001
+
+      - name: Sprint number
+        run: echo "Sprint number - ${{ needs.get_sprint_number.outputs.sprint }}"
 
       - name: Run test endpoints for 12
         if: ${{ needs.get_sprint_number.outputs.sprint == '12' }}
