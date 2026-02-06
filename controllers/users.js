@@ -1,4 +1,38 @@
+const bcrypt = require("bcryptjs");
+//const jwt = require("jsonwebtoken");
+
 const User = require("../models/user");
+
+const register = (req, res) => {
+  bcrypt
+    .hash(req.body.password, 10)
+    .then((hash) =>
+      User.create({
+        email: req.body.email,
+        password: hash,
+        name: req.body.name,
+        avatar: req.body.avatar,
+      })
+    )
+    .then((user) => {
+      res.status(201).send({
+        _id: user._id,
+        email: user.email,
+        name: user.name,
+        avatar: user.avatar,
+      });
+    })
+    .catch((err) => {
+      console.error(err);
+      if (err.name === "ValidationError") {
+        return res.status(400).send({ message: err.message });
+      }
+      if (err.code === 11000) {
+        return res.status(409).send({ message: err.message });
+      }
+      return res.status(500).send({ message: err.message });
+    });
+};
 
 const getUsers = (req, res) => {
   User.find({})
@@ -39,4 +73,4 @@ const createUser = (req, res) => {
     });
 };
 
-module.exports = { getUsers, getUserById, createUser };
+module.exports = { register, getUsers, getUserById, createUser };
