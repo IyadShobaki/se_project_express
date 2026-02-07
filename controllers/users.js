@@ -1,9 +1,32 @@
 const bcrypt = require("bcryptjs");
-//const jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 
 const User = require("../models/user");
+const { JWT_SECRET } = require("../utils/config");
 
-const register = (req, res) => {
+const login = (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    throw res.status(400).send({ message: "Email and password are required" });
+  }
+  return User.findUserByCredentials(email, password)
+    .then((user) => {
+      res.send({
+        token: jwt.sign({ _id: user._id }, JWT_SECRET, {
+          expiresIn: "7d",
+        }),
+      });
+    })
+    .catch((err) => {
+      console.error(err);
+      if (err.message === "Incorrect password or email") {
+        return res.status(401).send({ message: err.message });
+      }
+      return res.status(500).send({ message: err.message });
+    });
+};
+const createUser = (req, res) => {
   bcrypt
     .hash(req.body.password, 10)
     .then((hash) =>
@@ -60,17 +83,4 @@ const getUserById = (req, res) => {
     });
 };
 
-const createUser = (req, res) => {
-  const { name, avatar } = req.body;
-  User.create({ name, avatar })
-    .then((user) => res.status(201).send({ data: user }))
-    .catch((err) => {
-      console.error(err);
-      if (err.name === "ValidationError") {
-        return res.status(400).send({ message: err.message });
-      }
-      return res.status(500).send({ message: err.message });
-    });
-};
-
-module.exports = { register, getUsers, getUserById, createUser };
+module.exports = { getUsers, getUserById, createUser, login };
