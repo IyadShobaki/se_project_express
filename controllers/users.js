@@ -45,9 +45,9 @@ const login = (req, res) => {
 };
 const createUser = (req, res) => {
   if (!req.body.email || !req.body.password) {
-    return res
-      .status(BAD_REQUEST_ERROR_CODE)
-      .send({ message: "Email and password are required" });
+    const error = new Error(errorMessages.BAD_REQUEST);
+    error.code = BAD_REQUEST_ERROR_CODE;
+    throw error;
   }
   bcrypt
     .hash(req.body.password, 10)
@@ -69,7 +69,10 @@ const createUser = (req, res) => {
     })
     .catch((err) => {
       console.error(err);
-      if (err.name === "ValidationError") {
+      if (
+        err.name === "ValidationError" ||
+        err.code === BAD_REQUEST_ERROR_CODE
+      ) {
         return res
           .status(BAD_REQUEST_ERROR_CODE)
           .send({ message: errorMessages.BAD_REQUEST });
