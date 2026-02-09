@@ -5,7 +5,7 @@ const {
   BAD_REQUEST_ERROR_CODE,
   NOT_FOUND_ERROR_CODE,
   FORBIDDEN_CODE,
-} = require("../utils/constants");
+} = require("../utils/errors");
 
 const getClothingItems = (req, res) => {
   ClothingItem.find({})

@@ -14,7 +14,7 @@ const errorMessages = {
   // INTERNAL_SERVER_ERROR_CODE (500)
   INTERNAL_SERVER_ERROR: "An error has occurred on the server.",
 
-  //FORBIDDEN
+  // FORBIDDEN
   FORBIDDEN: "You don't have permission to delete this item.",
 };
 
