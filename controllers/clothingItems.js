@@ -4,12 +4,14 @@ const {
   errorMessages,
   BAD_REQUEST_ERROR_CODE,
   NOT_FOUND_ERROR_CODE,
-  FORBIDDEN_CODE,
+  OK_CODE,
+  CREATED_CODE,
+  FORBIDDEN_ERROR_CODE,
 } = require("../utils/errors");
 
 const getClothingItems = (req, res) => {
   ClothingItem.find({})
-    .then((items) => res.status(200).send({ data: items }))
+    .then((items) => res.status(OK_CODE).send({ data: items }))
     .catch((err) => {
       console.error(err);
       return res
@@ -22,7 +24,7 @@ const createClothingItem = (req, res) => {
   const owner = req.user._id;
   const { name, weather, imageUrl } = req.body;
   ClothingItem.create({ name, weather, imageUrl, owner })
-    .then((item) => res.status(201).send({ data: item }))
+    .then((item) => res.status(CREATED_CODE).send({ data: item }))
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
@@ -42,19 +44,19 @@ const deleteClothingItem = (req, res) => {
     .orFail()
     .then((item) => {
       if (item.owner.toString() !== req.user._id) {
-        throw new Error("Unauthorized request");
+        throw new Error(errorMessages.UNAUTHORIZED);
       }
       return item
         .deleteOne()
         .then(() =>
-          res.status(200).send({ message: "Item deleted successfully!" })
+          res.status(OK_CODE).send({ message: "Item deleted successfully!" })
         );
     })
     .catch((err) => {
       console.error(err);
-      if (err.message === "Unauthorized request") {
+      if (err.message === errorMessages.UNAUTHORIZED) {
         return res
-          .status(FORBIDDEN_CODE)
+          .status(FORBIDDEN_ERROR_CODE)
           .send({ message: errorMessages.FORBIDDEN });
       }
       if (err.name === "DocumentNotFoundError") {
@@ -82,7 +84,7 @@ const likeClothingItem = (req, res) => {
     { new: true }
   )
     .orFail()
-    .then((item) => res.status(200).send({ data: item }))
+    .then((item) => res.status(OK_CODE).send({ data: item }))
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
@@ -110,7 +112,7 @@ const dislikeClothingItem = (req, res) => {
     { new: true }
   )
     .orFail()
-    .then((item) => res.status(200).send({ data: item }))
+    .then((item) => res.status(OK_CODE).send({ data: item }))
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {

@@ -3,12 +3,25 @@ const jwt = require("jsonwebtoken");
 
 const User = require("../models/user");
 const { JWT_SECRET } = require("../utils/config");
+const {
+  BAD_REQUEST_ERROR_CODE,
+  UNAUTHORIZED_ERROR_CODE,
+  errorMessages,
+  INTERNAL_SERVER_ERROR_CODE,
+  CREATED_CODE,
+  DUPLICATE_KEY_ERROR_CODE,
+  CONFLICT_ERROR_CODE,
+  OK_CODE,
+  NOT_FOUND_ERROR_CODE,
+} = require("../utils/errors");
 
 const login = (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    throw res.status(400).send({ message: "Email and password are required" });
+    return res
+      .status(BAD_REQUEST_ERROR_CODE)
+      .send({ message: "Email and password are required" });
   }
   return User.findUserByCredentials(email, password)
     .then((user) => {
@@ -21,12 +34,21 @@ const login = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.message === "Incorrect password or email") {
-        return res.status(401).send({ message: err.message });
+        return res
+          .status(UNAUTHORIZED_ERROR_CODE)
+          .send({ message: errorMessages.UNAUTHORIZED });
       }
-      return res.status(500).send({ message: err.message });
+      return res
+        .status(INTERNAL_SERVER_ERROR_CODE)
+        .send({ message: errorMessages.INTERNAL_SERVER_ERROR });
     });
 };
 const createUser = (req, res) => {
+  if (!req.body.email || !req.body.password) {
+    return res
+      .status(BAD_REQUEST_ERROR_CODE)
+      .send({ message: "Email and password are required" });
+  }
   bcrypt
     .hash(req.body.password, 10)
     .then((hash) =>
@@ -38,7 +60,7 @@ const createUser = (req, res) => {
       })
     )
     .then((user) => {
-      res.status(201).send({
+      res.status(CREATED_CODE).send({
         _id: user._id,
         email: user.email,
         name: user.name,
@@ -48,12 +70,18 @@ const createUser = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
-        return res.status(400).send({ message: err.message });
+        return res
+          .status(BAD_REQUEST_ERROR_CODE)
+          .send({ message: errorMessages.BAD_REQUEST });
       }
-      if (err.code === 11000) {
-        return res.status(409).send({ message: err.message });
+      if (err.code === DUPLICATE_KEY_ERROR_CODE) {
+        return res
+          .status(CONFLICT_ERROR_CODE)
+          .send({ message: errorMessages.CONFLICT });
       }
-      return res.status(500).send({ message: err.message });
+      return res
+        .status(INTERNAL_SERVER_ERROR_CODE)
+        .send({ message: errorMessages.INTERNAL_SERVER_ERROR });
     });
 };
 
@@ -61,16 +89,22 @@ const getCurrentUser = (req, res) => {
   const { _id: userId } = req.user;
   User.findById(userId)
     .orFail()
-    .then((user) => res.status(200).send({ data: user }))
+    .then((user) => res.status(OK_CODE).send({ data: user }))
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
-        return res.status(404).send({ message: err.message });
+        return res
+          .status(NOT_FOUND_ERROR_CODE)
+          .send({ message: errorMessages.NOT_FOUND });
       }
       if (err.name === "CastError") {
-        return res.status(400).send({ message: err.message });
+        return res
+          .status(BAD_REQUEST_ERROR_CODE)
+          .send({ message: errorMessages.BAD_REQUEST });
       }
-      return res.status(500).send({ message: err.message });
+      return res
+        .status(INTERNAL_SERVER_ERROR_CODE)
+        .send({ message: errorMessages.INTERNAL_SERVER_ERROR });
     });
 };
 
@@ -82,16 +116,22 @@ const updateUserProfile = (req, res) => {
     { new: true, runValidators: true }
   )
     .orFail()
-    .then((user) => res.status(200).send({ data: user }))
+    .then((user) => res.status(OK_CODE).send({ data: user }))
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
-        return res.status(404).send({ message: err.message });
+        return res
+          .status(NOT_FOUND_ERROR_CODE)
+          .send({ message: errorMessages.NOT_FOUND });
       }
       if (err.name === "CastError") {
-        return res.status(400).send({ message: err.message });
+        return res
+          .status(BAD_REQUEST_ERROR_CODE)
+          .send({ message: errorMessages.BAD_REQUEST });
       }
-      return res.status(500).send({ message: err.message });
+      return res
+        .status(INTERNAL_SERVER_ERROR_CODE)
+        .send({ message: errorMessages.INTERNAL_SERVER_ERROR });
     });
 };
 module.exports = { updateUserProfile, getCurrentUser, createUser, login };
