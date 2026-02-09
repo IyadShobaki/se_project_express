@@ -44,7 +44,7 @@ const login = (req, res) => {
     });
 };
 const createUser = (req, res) => {
-  if (!req.body.email || !req.body.password) {
+  if (!req.body.password) {
     const error = new Error(errorMessages.BAD_REQUEST);
     error.code = BAD_REQUEST_ERROR_CODE;
     throw error;
