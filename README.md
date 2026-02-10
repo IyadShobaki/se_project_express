@@ -32,3 +32,5 @@ The following technologies and techniques are used in this project:
 - GET /items – Get all clothing items.
 - POST /items – Create a new clothing item.
 - DELETE /items/:id – Delete a clothing item.
+
+- [WTWR - Stage 2](https://drive.google.com/file/d/182JGjBaPg92-KmaTfzDQRnBlXpzoJdsQ/view?usp=drive_link)
