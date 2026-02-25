@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const { errors } = require("celebrate");
 const router = require("./routes/index");
 const errorHandler = require("./middlewares/errorHandler");
 
@@ -21,6 +22,9 @@ mongoose
   .catch(console.error);
 
 app.use("/", router);
+
+// Celebrate error handler (must be after routes, before error handler)
+app.use(errors());
 
 // Centralized error handling middleware
 app.use(errorHandler);
