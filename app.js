@@ -4,6 +4,7 @@ const cors = require("cors");
 const { errors } = require("celebrate");
 const router = require("./routes/index");
 const errorHandler = require("./middlewares/errorHandler");
+const { requestLogger, errorLogger } = require("./middlewares/logger");
 
 const { PORT = 3001 } = process.env;
 
@@ -21,7 +22,13 @@ mongoose
   })
   .catch(console.error);
 
+// Request logger - must be before routes
+app.use(requestLogger);
+
 app.use("/", router);
+
+// Error logger - must be after routes, before error handlers
+app.use(errorLogger);
 
 // Celebrate error handler (must be after routes, before error handler)
 app.use(errors());
