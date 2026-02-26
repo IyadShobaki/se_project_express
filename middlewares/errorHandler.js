@@ -1,6 +1,6 @@
 const { INTERNAL_SERVER_ERROR_CODE } = require("../utils/errors");
 
-const errorHandler = (err, req, res) => {
+const errorHandler = (err, req, res, next) => {
   console.error(err);
 
   const statusCode = err.statusCode || INTERNAL_SERVER_ERROR_CODE;
