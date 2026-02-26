@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 const OK_CODE = 200;
 const CREATED_CODE = 201;
 const BAD_REQUEST_ERROR_CODE = 400;
@@ -29,15 +30,55 @@ const errorMessages = {
   CONFLICT: "Email already in use.",
 };
 
+// Custom error classes
+class BadRequestError extends Error {
+  constructor(message = errorMessages.BAD_REQUEST) {
+    super(message);
+    this.statusCode = BAD_REQUEST_ERROR_CODE;
+    this.name = "BadRequestError";
+  }
+}
+
+class UnauthorizedError extends Error {
+  constructor(message = errorMessages.UNAUTHORIZED) {
+    super(message);
+    this.statusCode = UNAUTHORIZED_ERROR_CODE;
+    this.name = "UnauthorizedError";
+  }
+}
+
+class ForbiddenError extends Error {
+  constructor(message = errorMessages.FORBIDDEN) {
+    super(message);
+    this.statusCode = FORBIDDEN_ERROR_CODE;
+    this.name = "ForbiddenError";
+  }
+}
+
+class NotFoundError extends Error {
+  constructor(message = errorMessages.NOT_FOUND) {
+    super(message);
+    this.statusCode = NOT_FOUND_ERROR_CODE;
+    this.name = "NotFoundError";
+  }
+}
+
+class ConflictError extends Error {
+  constructor(message = errorMessages.CONFLICT) {
+    super(message);
+    this.statusCode = CONFLICT_ERROR_CODE;
+    this.name = "ConflictError";
+  }
+}
+
 module.exports = {
   OK_CODE,
   CREATED_CODE,
-  BAD_REQUEST_ERROR_CODE,
-  NOT_FOUND_ERROR_CODE,
   INTERNAL_SERVER_ERROR_CODE,
-  FORBIDDEN_ERROR_CODE,
-  UNAUTHORIZED_ERROR_CODE,
-  CONFLICT_ERROR_CODE,
   DUPLICATE_KEY_ERROR_CODE,
-  errorMessages,
+  BadRequestError,
+  UnauthorizedError,
+  ForbiddenError,
+  NotFoundError,
+  ConflictError,
 };
