@@ -33,4 +33,19 @@ The following technologies and techniques are used in this project:
 - POST /items – Create a new clothing item.
 - DELETE /items/:id – Delete a clothing item.
 
+## Project Pitch Videos
+
+Check out these videos, where I describe my project and some challenges I faced while building it:
+
+- [WTWR - Stage 1](https://drive.google.com/file/d/1TrAKqJ1UKmjSwRedUUrPjz7s14-r_1b2/view?usp=drive_link)
 - [WTWR - Stage 2](https://drive.google.com/file/d/182JGjBaPg92-KmaTfzDQRnBlXpzoJdsQ/view?usp=drive_link)
+- [WTWR - Final Stage](https://drive.google.com/file/d/1NQTyT2wZVbWZHY7J1iQyuaOXmnHbI4CT/view?usp=drive_link)
+
+## Live Website
+
+Visit the live application deployed with Google Cloud - Full stack version:
+👉 https://www.wearright.jumpingcrab.com/
+
+## Frontend
+
+https://github.com/IyadShobaki/se_project_react
