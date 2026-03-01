@@ -7,11 +7,11 @@ const {
   CREATED_CODE,
   DUPLICATE_KEY_ERROR_CODE,
   OK_CODE,
-  BadRequestError,
-  UnauthorizedError,
-  NotFoundError,
-  ConflictError,
 } = require("../utils/errors");
+const BadRequestError = require("../utils/errors/BadRequestError");
+const UnauthorizedError = require("../utils/errors/UnauthorizedError");
+const NotFoundError = require("../utils/errors/NotFoundError");
+const ConflictError = require("../utils/errors/ConflictError");
 
 const login = (req, res, next) => {
   const { email, password } = req.body;

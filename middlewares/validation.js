@@ -73,16 +73,6 @@ const validateId = celebrate({
   }),
 });
 
-// Validate user ID
-const validateUserId = celebrate({
-  params: Joi.object().keys({
-    userId: Joi.string().hex().length(24).messages({
-      "string.hex": "The userId must be a hexadecimal value",
-      "string.length": "The userId must be 24 characters long",
-    }),
-  }),
-});
-
 // Validate user profile update
 const validateUserUpdate = celebrate({
   body: Joi.object().keys({
@@ -101,6 +91,5 @@ module.exports = {
   validateUserCreate,
   validateUserLogin,
   validateId,
-  validateUserId,
   validateUserUpdate,
 };
