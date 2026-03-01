@@ -6,13 +6,11 @@ const { errors } = require("celebrate");
 const router = require("./routes/index");
 const errorHandler = require("./middlewares/errorHandler");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
-
-const { PORT = 3001 } = process.env;
+const { PORT } = require("./utils/config");
 
 const app = express();
 
 app.use(cors());
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
