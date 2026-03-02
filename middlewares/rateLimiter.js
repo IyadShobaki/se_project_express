@@ -9,7 +9,7 @@ const {
 // Rate limiter middleware to protect against DoS attacks
 const limiter = rateLimit({
   windowMs: RATE_LIMIT_WINDOW_MS,
-  max: RATE_LIMIT_MAX_REQUESTS,
+  limit: RATE_LIMIT_MAX_REQUESTS,
   message: RATE_LIMIT_MESSAGE,
   statusCode: RATE_LIMIT_STATUS_CODE,
   standardHeaders: true, // Return rate limit info in `RateLimit-*` headers
